@@ -7,19 +7,19 @@ import javax.swing.border.LineBorder;
 
 import java.awt.Color;
 import java.awt.event.*;
-import java.util.Arrays;
+// import java.util.Arrays;
 
-import javax.swing.JColorChooser;
-import javax.swing.border.LineBorder;
+// import javax.swing.JColorChooser;
+// import javax.swing.border.LineBorder;
 public class Solitaire extends JFrame implements ActionListener
 {
 	private JButton[][] Feld = new JButton[7][7]; //2-dimensionales Spielfeld mit 2D Array
 	private int Abstand = 0; //Abstand der Buttons vom Rand
-	private int ButtonGrösse = 100; //Abmessungen der quadratischen Buttons
-	private boolean ButtonSelected = false; //Kontrolle, ob ein Button ausgewählt ist
-	private boolean turnPossible; // Kontrolle, ob noch mindestens ein weiterer Zug möglich ist
-	private int sx = 0; //kurz für selectedX, x-Koordinate des ausgewählten Feldes
-	private int sy = 0; //kurz für selectedY, y-Koordinate des ausgewählten Feldes
+	private int ButtonGroesse = 100; //Abmessungen der quadratischen Buttons
+	private boolean ButtonSelected = false; //Kontrolle, ob ein Button ausgewaehlt ist
+	private boolean turnPossible; // Kontrolle, ob noch mindestens ein weiterer Zug moeglich ist
+	private int sx = 0; //kurz fuer selectedX, x-Koordinate des ausgewaehlten Feldes
+	private int sy = 0; //kurz fuer selectedY, y-Koordinate des ausgewaehlten Feldes
 	private int jx = 0; //x-Koordinate des Feldes, auf welches gesprungen werden soll (jump)
 	private int jy = 0; //y-Koordinate des Feldes, auf welches gesprungen werden soll (jump)
 	private int maxTurns = 34;
@@ -32,16 +32,16 @@ public class Solitaire extends JFrame implements ActionListener
 	private int[] jyHistory = new int [maxTurns];
 	
 	private JButton reset; //Erstellt den Restknopf
-	private int resetHeight = 40; //Höhe des Reset Knopfs
+	private int resetHeight = 40; //Hoehe des Reset Knopfs
 	private int resetWidth = 100; //Breite des Reset Knopfs
-	private int resetx = 0; //Variable für x-Koordinate des Resetbuttons
-	private int resety = 0; //Variable für y-Koordinate des Resetbuttons
-	private static int windowHeight; //Fensterhöhe
+	private int resetx = 0; //Variable fuer x-Koordinate des Resetbuttons
+	private int resety = 0; //Variable fuer y-Koordinate des Resetbuttons
+	private static int windowHeight; //Fensterhoehe
 	private static int windowWidth; //Fensterbreite
 	
 	private JButton back;
 	private JButton forward;
-	private int controlSize = 40; // Grösse der Vorwärts- und Zurückknöpfe
+	private int controlSize = 40; // Groesse der Vorwaerts- und Zurueckknoepfe
 	
 	private JLabel win;
 	private JLabel gameOver;
@@ -59,43 +59,43 @@ public class Solitaire extends JFrame implements ActionListener
 		super("Solitaire"); //Fenstername
 		JPanel Spielbrett = new JPanel();
 		Spielbrett.setLayout(null);
-		for (int i = 0; i<7; i++) //For Schleife für x- Koordinaten
+		for (int i = 0; i<7; i++) //For Schleife fuer x- Koordinaten
 		{
-			for (int j = 0; j<7; j++) //For Schleife für y- Koordinaten
+			for (int j = 0; j<7; j++) //For Schleife fuer y- Koordinaten
 			{
 				Feld[i][j] = new JButton();
-				Feld[i][j].setSize(ButtonGrösse,ButtonGrösse); // Buttongrösse definieren
-				Feld[i][j].setLocation(Abstand + (ButtonGrösse)*i, Abstand + (ButtonGrösse)*j); // Position der einzelnen Button einstellen
-				Feld[i][j].addActionListener(this); // Buttons zum Actionlistener hinzufügen
+				Feld[i][j].setSize(ButtonGroesse,ButtonGroesse); // Buttongroesse definieren
+				Feld[i][j].setLocation(Abstand + (ButtonGroesse)*i, Abstand + (ButtonGroesse)*j); // Position der einzelnen Button einstellen
+				Feld[i][j].addActionListener(this); // Buttons zum Actionlistener hinzufuegen
 				Feld[i][j].setBackground(full); // alle Felder auf voll setzen
 				Feld[i][j].setBorder(new LineBorder (Color.darkGray));
-				Spielbrett.add(Feld[i][j]); // Buttons zum Feld hinzufügen
+				Spielbrett.add(Feld[i][j]); // Buttons zum Feld hinzufuegen
 			}
 		}
 	//Eckfelder ausblenden
 	hideCorners();
 	
-	//Farbe des mittleren Feldes ändern
+	//Farbe des mittleren Feldes ï¿½ndern
 	Feld[3][3].setBackground(empty);
 	Feld[3][3].setBorder(null);
 	
-	//Fenstergrösse definieren
-	windowHeight = Feld[6][6].getBounds().y + ButtonGrösse + Abstand + 100;
-	windowWidth = Feld[6][6].getBounds().x + ButtonGrösse + Abstand;
+	//Fenstergrï¿½sse definieren
+	windowHeight = Feld[6][6].getBounds().y + ButtonGroesse + Abstand + 100;
+	windowWidth = Feld[6][6].getBounds().x + ButtonGroesse + Abstand;
 	
 	//reset Knopf definieren
 	reset = new JButton ("Reset");
 	reset.setSize(resetWidth,resetHeight);
-	reset.setBackground(buttonBackground); //Knopfhintergrund ändern
-	reset.setForeground(buttonFont); //Schriftfarbe ändern
-	reset.setBorder(null); //Knopfränder ausblenden
+	reset.setBackground(buttonBackground); //Knopfhintergrund aendern
+	reset.setForeground(buttonFont); //Schriftfarbe aendern
+	reset.setBorder(null); //Knopfraender ausblenden
 	reset.addActionListener(this);
 	resetx = 300;
 	resety = 730;
 	reset.setLocation(resetx,resety); //Position des Reset Knopfs definieren
-	Spielbrett.add(reset); //Reset Knopf zum Spielbrett hinzufügen
+	Spielbrett.add(reset); //Reset Knopf zum Spielbrett hinzufuegen
 	
-	//zurück Knopf definieren
+	//zurueck Knopf definieren
 	back = new JButton ("<");
 	back.setSize(controlSize,controlSize);
 	back.setBackground(buttonBackground);
@@ -106,7 +106,7 @@ public class Solitaire extends JFrame implements ActionListener
 	back.setLocation(0, 0);
 	Spielbrett.add(back);
 	
-	//vorwärts Knopf definieren
+	//vorwaerts Knopf definieren
 	forward = new JButton (">");
 	forward.setSize(controlSize,controlSize);
 	forward.setBackground(buttonBackground);
@@ -117,7 +117,7 @@ public class Solitaire extends JFrame implements ActionListener
 	forward.setLocation(controlSize,0);
 	Spielbrett.add(forward);
 	
-	//Fensterhintergrundfarbe ändern
+	//Fensterhintergrundfarbe aendern
 	Spielbrett.setBackground(windowBackground);
 	
 	//Win-Screen definieren
@@ -144,9 +144,9 @@ public class Solitaire extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent Klick) 
 	{
 		Object Quelle = Klick.getSource();
-		if(Quelle == reset) //Testet, ob der Resetknopf gedrückt wurde
+		if(Quelle == reset) //Testet, ob der Resetknopf gedrï¿½ckt wurde
 		{
-			reset(); //führt die reset Methode aus
+			reset(); //fï¿½hrt die reset Methode aus
 		}
 		else if(Quelle == back)
 		{
@@ -158,48 +158,48 @@ public class Solitaire extends JFrame implements ActionListener
 		}
 		else if(ButtonSelected == false)
 		{
-			for(int x=0; x<7; x++) //For-Schleife für x-Koordinaten
+			for(int x=0; x<7; x++) //For-Schleife fï¿½r x-Koordinaten
 			{
-				for(int y = 0; y<7; y++) //For-Schleife für y-Koordinaten
+				for(int y = 0; y<7; y++) //For-Schleife fï¿½r y-Koordinaten
 				{
 					if(Quelle == Feld[x][y]) //testet, von welchem Feld eine Aktion ausgeht
 					{
-						sx = x; //speichert die x-Koordinate, des ausgewählten Feldes, in einer Variable
-						sy = y; //speichert die y-Koordinate, des ausgewählten Feldes, in einer Variable
-						play1(); //führt die play1 Methode aus
+						sx = x; //speichert die x-Koordinate, des ausgewï¿½hlten Feldes, in einer Variable
+						sy = y; //speichert die y-Koordinate, des ausgewï¿½hlten Feldes, in einer Variable
+						play1(); //fï¿½hrt die play1 Methode aus
 					}
 				}
 			}
 		}
 		else if(ButtonSelected == true)
 		{
-			for(int x=0; x<7; x++) //For-Schleife für x-Koordinaten
+			for(int x=0; x<7; x++) //For-Schleife fï¿½r x-Koordinaten
 			{
-				for(int y = 0; y<7; y++) //For-Schleife für y-Koordinaten
+				for(int y = 0; y<7; y++) //For-Schleife fï¿½r y-Koordinaten
 				{
 					if(Quelle == Feld[x][y]) //testet, von welchem Feld eine Aktion ausgeht
 					{
 						jx = x; //speichert die x-Koordinate, des Feldes auf welches gesprungen werden soll, in einer Variable
 						jy = y; //speichert die y-Koordinate, des Feldes auf welches gesprungen werden soll, in einer Variable
-						play2(); //führt die play2 Methode aus
+						play2(); //fï¿½hrt die play2 Methode aus
 					}
 				}
 			}
 		}
 	}
 	
-	public void play1() //Methode für den ersten Teil eines Spielzugs. (auswählen eines Feldes)
+	public void play1() //Methode fï¿½r den ersten Teil eines Spielzugs. (auswï¿½hlen eines Feldes)
 	{
-		if(Feld[sx][sy].getBackground() == full) //Nur volle Felder können zum Springen ausgewählt werden. Diese if-Schleife testet, ob ein Feld schwarz ist
+		if(Feld[sx][sy].getBackground() == full) //Nur volle Felder kï¿½nnen zum Springen ausgewï¿½hlt werden. Diese if-Schleife testet, ob ein Feld schwarz ist
 		{
-				Feld[sx][sy].setBackground(marked); //markiert das ausgewählte Feld mit der Farbe Orange
-				ButtonSelected = true; // Speichert, dass ein Feld ausgwählt ist
+				Feld[sx][sy].setBackground(marked); //markiert das ausgewï¿½hlte Feld mit der Farbe Orange
+				ButtonSelected = true; // Speichert, dass ein Feld ausgwï¿½hlt ist
 		}		
 	}
 	
-	public void play2() //Methode für den zweiten Teil eines Spielzugs. Das Überspringen
+	public void play2() //Methode fï¿½r den zweiten Teil eines Spielzugs. Das ï¿½berspringen
 	{
-		if(Feld[jx][jy].getBackground() == full) //if-Schleife zum direkten Wechseln des ausgewählten Feldes
+		if(Feld[jx][jy].getBackground() == full) //if-Schleife zum direkten Wechseln des ausgewï¿½hlten Feldes
 		{
 			Feld[jx][jy].setBackground(marked);
 			Feld[sx][sy].setBackground(full);
@@ -209,9 +209,9 @@ public class Solitaire extends JFrame implements ActionListener
 			jy = 0;
 			ButtonSelected = true;
 		}
-		else if(jx == sx && jy == sy) //testet, ob das Feld mit dem ausgewählten Feld übereinstimmt
+		else if(jx == sx && jy == sy) //testet, ob das Feld mit dem ausgewï¿½hlten Feld ï¿½bereinstimmt
 		{
-			Feld[jx][jy].setBackground(full); //setzt das markierte Feld zurück auf schwarz
+			Feld[jx][jy].setBackground(full); //setzt das markierte Feld zurï¿½ck auf schwarz
 			ButtonSelected = false; //speichert, dass kein Feld mehr markiert ist
 			sx=0;
 			sy=0;
@@ -286,7 +286,7 @@ public class Solitaire extends JFrame implements ActionListener
 		Feld[3][3].setBackground(empty); //Farbe des mittleren Feldes auf leer setzen
 		Feld[3][3].setBorder(null);
 		ButtonSelected = false; //speichert, dass kein Feld markiert ist
-		for(int i=0; i<maxTurns; i++) //löscht den Verlauf
+		for(int i=0; i<maxTurns; i++) //lï¿½scht den Verlauf
 		{
 			sxHistory[i] = 0;
 			syHistory[i] = 0;
@@ -294,9 +294,9 @@ public class Solitaire extends JFrame implements ActionListener
 			jyHistory[i] = 0;
 		}
 		
-		hideCorners(); // füllt die Eckfelder mit der Farbe "empty", da es sonst zu Bugs in Zusammenhang mit der gameOver Methode führen kann
+		hideCorners(); // fï¿½llt die Eckfelder mit der Farbe "empty", da es sonst zu Bugs in Zusammenhang mit der gameOver Methode fï¿½hren kann
 		
-		turns = 0; //setzt die Anzahl Spielzüge zurück
+		turns = 0; //setzt die Anzahl Spielzï¿½ge zurï¿½ck
 		sx=0;
 		sy=0;
 		jx=0;
@@ -312,8 +312,8 @@ public class Solitaire extends JFrame implements ActionListener
 			sy = syHistory[turns];
 			jx = jxHistory[turns];
 			jy = jyHistory[turns];
-			turns--; //setzt den Spielzugzähler um 1 zurück
-			//macht den Spielzug rückgängig
+			turns--; //setzt den Spielzugzï¿½hler um 1 zurï¿½ck
+			//macht den Spielzug rï¿½ckgï¿½ngig
 			Feld[jx][jy].setBackground(empty);
 			Feld[sx][sy].setBackground(full);
 			Feld[(sx+jx)/2][(sy+jy)/2].setBackground(full);
@@ -329,13 +329,13 @@ public class Solitaire extends JFrame implements ActionListener
 	{
 		if(sxHistory[turns+1] + syHistory[turns+1] > 0) //testet, ob ein Zug nach vorne gemacht werden kann
 		{
-			turns++; //erhöht den Spielzugzähler um 1
-			//holt die Koordinaten für den nächsten Zug aus dem Verlauf
+			turns++; //erhï¿½ht den Spielzugzï¿½hler um 1
+			//holt die Koordinaten fï¿½r den nï¿½chsten Zug aus dem Verlauf
 			sx = sxHistory[turns];
 			sy = syHistory[turns];
 			jx = jxHistory[turns];
 			jy = jyHistory[turns];
-			//macht einen Spielzug vorwärts
+			//macht einen Spielzug vorwï¿½rts
 			Feld[jx][jy].setBackground(full);
 			Feld[sx][sy].setBackground(empty);
 			Feld[(sx+jx)/2][(sy+jy)/2].setBackground(empty);
@@ -345,44 +345,44 @@ public class Solitaire extends JFrame implements ActionListener
 		}
 	}
 	
-	public void logHistory () //speichert die Spielzüge in einem Verlauf
+	public void logHistory () //speichert die Spielzï¿½ge in einem Verlauf
 	{
-		turns++;//erhöht den Spielzugzähler um 1
+		turns++;//erhï¿½ht den Spielzugzï¿½hler um 1
 		sxHistory[turns] = sx;
 		syHistory[turns] = sy;
 		jxHistory[turns] = jx;
 		jyHistory[turns] = jy;
-		//setzt die Variabeln zurück
+		//setzt die Variabeln zurï¿½ck
 		sx = 0;
 		sy = 0;
 		jx = 0;
 		jy = 0;
 	}
 		
-	public void gameOver() //Funktion, welche testet, ob noch mindestens ein Spielzug möglich ist und ob das Spiel geschafft wurde
+	public void gameOver() //Funktion, welche testet, ob noch mindestens ein Spielzug mï¿½glich ist und ob das Spiel geschafft wurde
 	{
 		turnPossible = false;
 		
-		for (int i = 0; i<7; i++)//For-Schleife testet für alle Felder, ob noch ein Zug möglich ist. Falls nicht bleibt der bollean "turnPossible" die ganze Schleife über false und der win- oder gameOver-Screen wird angezeigt
+		for (int i = 0; i<7; i++)//For-Schleife testet fï¿½r alle Felder, ob noch ein Zug mï¿½glich ist. Falls nicht bleibt der bollean "turnPossible" die ganze Schleife ï¿½ber false und der win- oder gameOver-Screen wird angezeigt
 		{
 			for (int j = 0; j<7; j++)
 			{
 				if(Feld[i][j].getBackground() == full) //Feld voll?
 				{
-					fullFields++;//zählt die Anzahl der gefüllten Felder
-					if(i<5 && Feld[i+1][j].getBackground() == full && Feld[i+2][j].getBackground() == empty) //Zug möglich nach unten?
+					fullFields++;//zï¿½hlt die Anzahl der gefï¿½llten Felder
+					if(i<5 && Feld[i+1][j].getBackground() == full && Feld[i+2][j].getBackground() == empty) //Zug mï¿½glich nach unten?
 					{
 						turnPossible = true;
 					}
-					else if(i>1 && Feld[i-1][j].getBackground() == full && Feld[i-2][j].getBackground() == empty) //Zug möglich nach oben?
+					else if(i>1 && Feld[i-1][j].getBackground() == full && Feld[i-2][j].getBackground() == empty) //Zug mï¿½glich nach oben?
 					{
 						turnPossible = true;
 					}
-					else if(j<5 && Feld[i][j+1].getBackground() == full && Feld[i][j+2].getBackground() == empty) //Zug möglich nach rechts?
+					else if(j<5 && Feld[i][j+1].getBackground() == full && Feld[i][j+2].getBackground() == empty) //Zug mï¿½glich nach rechts?
 					{
 						turnPossible = true;
 					}
-					else if(j>1 &&Feld[i][j-1].getBackground() == full &&Feld[i][j-2].getBackground() == empty) //Zug möglich nach links?
+					else if(j>1 &&Feld[i][j-1].getBackground() == full &&Feld[i][j-2].getBackground() == empty) //Zug mï¿½glich nach links?
 					{						
 						turnPossible = true;
 					}
@@ -408,10 +408,10 @@ public class Solitaire extends JFrame implements ActionListener
 			clearButtons(); 
 			gameOver.setVisible(true); // gameOver-Screen wird angezeigt
 		}
-		fullFields = 0; //Die Anzahl der vollen Felder wird für den nächsten Test zurückgesetzt
+		fullFields = 0; //Die Anzahl der vollen Felder wird fï¿½r den nï¿½chsten Test zurï¿½ckgesetzt
 	}
 	
-	public void clearButtons() //Funktion zum Ausblenden aller Felder, für Win oder Game Over Screen
+	public void clearButtons() //Funktion zum Ausblenden aller Felder, fï¿½r Win oder Game Over Screen
 	{
 		for (int x = 0; x<7; x++)
 		{
@@ -464,12 +464,12 @@ public class Solitaire extends JFrame implements ActionListener
 	public static void main (String[] args)
 	//Fenster generieren
 	{
-		Solitaire Fenster = new Solitaire(); //führt den Konstruktor aus
-		Fenster.setSize(windowWidth,windowHeight); //setzt die Grösse des Fensters
+		Solitaire Fenster = new Solitaire(); //fï¿½hrt den Konstruktor aus
+		Fenster.setSize(windowWidth,windowHeight); //setzt die Grï¿½sse des Fensters
 		Fenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		Fenster.setVisible(true); // macht das Fenster sichtbar
 		Fenster.setLocationRelativeTo(null); //zentriert das Fenster auf dem Bildschirm
-		Fenster.setResizable(false); //deaktiviert, dass die Fenstergrösse mit der Maus geändert werden kann
+		Fenster.setResizable(false); //deaktiviert, dass die Fenstergrï¿½sse mit der Maus geï¿½ndert werden kann
 	}
 }
 
