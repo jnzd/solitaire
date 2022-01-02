@@ -1,16 +1,10 @@
 package solitaire;
 import java.awt.*;
-
 import javax.swing.*;
-
 import javax.swing.border.LineBorder;
-
 import java.awt.Color;
 import java.awt.event.*;
-// import java.util.Arrays;
 
-// import javax.swing.JColorChooser;
-// import javax.swing.border.LineBorder;
 public class Solitaire extends JFrame implements ActionListener
 {
 	private JButton[][] field = new JButton[7][7]; //2-dimensionales Spielfeld mit 2D Array
@@ -149,16 +143,16 @@ public class Solitaire extends JFrame implements ActionListener
 	}
 	
 	public void actionPerformed(ActionEvent Klick) {
-		Object Quelle = Klick.getSource();
-		if(Quelle == reset) { reset(); }
-		else if(Quelle == back) { back(); }
-		else if(Quelle == forward) { forward(); }
+		Object source = Klick.getSource();
+		if(source == reset) { reset(); }
+		else if(source == back) { back(); }
+		else if(source == forward) { forward(); }
 		else if(!buttonSelected) {
 			for(int x=0; x<7; x++) {
 				for(int y = 0; y<7; y++) {
-					if(Quelle == field[x][y]) {
-						sx = x; //speichert die x-Koordinate, des ausgewaehlten fieldes, in einer Variable
-						sy = y; //speichert die y-Koordinate, des ausgewaehlten fieldes, in einer Variable
+					if(source == field[x][y]) {
+						sx = x; //speichert die x-Koordinate, des ausgewaehlten feldes, in einer Variable
+						sy = y; //speichert die y-Koordinate, des ausgewaehlten feldes, in einer Variable
 						play1(); //fuehrt die play1 Methode aus
 					}
 				}
@@ -166,9 +160,9 @@ public class Solitaire extends JFrame implements ActionListener
 		} else {
 			for(int x=0; x<7; x++) {
 				for(int y = 0; y<7; y++) {
-					if(Quelle == field[x][y]) {
-						jx = x; //speichert die x-Koordinate, des fieldes auf welches gesprungen werden soll, in einer Variable
-						jy = y; //speichert die y-Koordinate, des fieldes auf welches gesprungen werden soll, in einer Variable
+					if(source == field[x][y]) {
+						jx = x; //speichert die x-Koordinate, des feldes auf welches gesprungen werden soll, in einer Variable
+						jy = y; //speichert die y-Koordinate, des feldes auf welches gesprungen werden soll, in einer Variable
 						play2(); //fuehrt die play2 Methode aus
 					}
 				}
@@ -178,7 +172,7 @@ public class Solitaire extends JFrame implements ActionListener
 	
 	public void play1() {
 		if(field[sx][sy].getBackground() == full) {
-		//Nur volle fielder koennen zum Springen ausgewaehlt werden. Diese if-Schleife testet, ob ein field schwarz ist
+		//Nur volle felder koennen zum Springen ausgewaehlt werden. Diese if-Schleife testet, ob ein feld schwarz ist
 			field[sx][sy].setBackground(marked); //markiert das ausgewaehlte field mit der Farbe Orange
 			buttonSelected = true; // Speichert, dass ein field ausgwaehlt ist
 		}		
@@ -279,8 +273,7 @@ public class Solitaire extends JFrame implements ActionListener
 		jy=0;
 	}
 	
-	public void back ()
-	{
+	public void back () {
 		if(turns > 0) {
 			//Holt die Koordinaten der fielder, welche am letzten Spielzug beteiligt waren aus dem Verlauf
 			sx = sxHistory[turns];
@@ -300,8 +293,7 @@ public class Solitaire extends JFrame implements ActionListener
 		} 
 	}
 	
-	public void forward ()
-	{
+	public void forward () {
 		if(sxHistory[turns+1] + syHistory[turns+1] > 0) {
 			turns++; //erhoeht den Spielzugzaehler um 1
 			//holt die Koordinaten fuer den naechsten Zug aus dem Verlauf
