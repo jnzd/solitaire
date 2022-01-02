@@ -13,15 +13,14 @@ import java.awt.event.*;
 // import javax.swing.border.LineBorder;
 public class Solitaire extends JFrame implements ActionListener
 {
-	private JButton[][] Feld = new JButton[7][7]; //2-dimensionales Spielfeld mit 2D Array
-	private int Abstand = 0; //Abstand der Buttons vom Rand
-	private int ButtonGroesse = 100; //Abmessungen der quadratischen Buttons
-	private boolean ButtonSelected = false; //Kontrolle, ob ein Button ausgewaehlt ist
-	private boolean turnPossible; // Kontrolle, ob noch mindestens ein weiterer Zug moeglich ist
-	private int sx = 0; //kurz fuer selectedX, x-Koordinate des ausgewaehlten Feldes
-	private int sy = 0; //kurz fuer selectedY, y-Koordinate des ausgewaehlten Feldes
-	private int jx = 0; //x-Koordinate des Feldes, auf welches gesprungen werden soll (jump)
-	private int jy = 0; //y-Koordinate des Feldes, auf welches gesprungen werden soll (jump)
+	private JButton[][] field = new JButton[7][7]; //2-dimensionales Spielfeld mit 2D Array
+	private int borderDistance = 0; //borderDistance der Buttons vom Rand
+	private int buttonSize = 100; //Abmessungen der quadratischen Buttons
+	private boolean buttonSelected = false; //Kontrolle, ob ein Button ausgewaehlt ist
+	private int sx = 0; //kurz fuer selectedX, x-Koordinate des ausgewaehlten fieldes
+	private int sy = 0; //kurz fuer selectedY, y-Koordinate des ausgewaehlten fieldes
+	private int jx = 0; //x-Koordinate des fieldes, auf welches gesprungen werden soll (jump)
+	private int jy = 0; //y-Koordinate des fieldes, auf welches gesprungen werden soll (jump)
 	private int maxTurns = 34;
 	private int turns = 0;
 	private int fullFields = 0;
@@ -46,9 +45,9 @@ public class Solitaire extends JFrame implements ActionListener
 	private JLabel win;
 	private JLabel gameOver;
 	
-	private Color marked = Color.white; //Farbe des markierten Feldes
-	private Color empty = Color.gray; //Farbe von leeren Feldern
-	private Color full = Color.black; //Farbe von vollen Feldern
+	private Color marked = Color.white; //Farbe des markierten fieldes
+	private Color empty = Color.gray; //Farbe von leeren fieldern
+	private Color full = Color.black; //Farbe von vollen fieldern
 	private Color windowBackground = Color.darkGray; //Hintergrundfarbe
 	private Color buttonBackground = Color.black; //Hintergrundfarbe der Buttons
 	private Color buttonFont = Color.white; //Schriftfarbe der Buttons
@@ -57,31 +56,31 @@ public class Solitaire extends JFrame implements ActionListener
 	public Solitaire()
 	{
 		super("Solitaire"); //Fenstername
-		JPanel Spielbrett = new JPanel();
-		Spielbrett.setLayout(null);
+		JPanel board = new JPanel();
+		board.setLayout(null);
 		for (int i = 0; i<7; i++) //For Schleife fuer x- Koordinaten
 		{
 			for (int j = 0; j<7; j++) //For Schleife fuer y- Koordinaten
 			{
-				Feld[i][j] = new JButton();
-				Feld[i][j].setSize(ButtonGroesse,ButtonGroesse); // Buttongroesse definieren
-				Feld[i][j].setLocation(Abstand + (ButtonGroesse)*i, Abstand + (ButtonGroesse)*j); // Position der einzelnen Button einstellen
-				Feld[i][j].addActionListener(this); // Buttons zum Actionlistener hinzufuegen
-				Feld[i][j].setBackground(full); // alle Felder auf voll setzen
-				Feld[i][j].setBorder(new LineBorder (Color.darkGray));
-				Spielbrett.add(Feld[i][j]); // Buttons zum Feld hinzufuegen
+				field[i][j] = new JButton();
+				field[i][j].setSize(buttonSize,buttonSize); // Buttongroesse definieren
+				field[i][j].setLocation(borderDistance + (buttonSize)*i, borderDistance + (buttonSize)*j); // Position der einzelnen Button einstellen
+				field[i][j].addActionListener(this); // Buttons zum Actionlistener hinzufuegen
+				field[i][j].setBackground(full); // alle fielder auf voll setzen
+				field[i][j].setBorder(new LineBorder (Color.darkGray));
+				board.add(field[i][j]); // Buttons zum field hinzufuegen
 			}
 		}
 	//Eckfelder ausblenden
 	hideCorners();
 	
-	//Farbe des mittleren Feldes �ndern
-	Feld[3][3].setBackground(empty);
-	Feld[3][3].setBorder(null);
+	//Farbe des mittleren fieldes �ndern
+	field[3][3].setBackground(empty);
+	field[3][3].setBorder(null);
 	
 	//Fenstergr�sse definieren
-	windowHeight = Feld[6][6].getBounds().y + ButtonGroesse + Abstand + 100;
-	windowWidth = Feld[6][6].getBounds().x + ButtonGroesse + Abstand;
+	windowHeight = field[6][6].getBounds().y + buttonSize + borderDistance + 100;
+	windowWidth = field[6][6].getBounds().x + buttonSize + borderDistance;
 	
 	//reset Knopf definieren
 	reset = new JButton ("Reset");
@@ -93,7 +92,7 @@ public class Solitaire extends JFrame implements ActionListener
 	resetx = 300;
 	resety = 730;
 	reset.setLocation(resetx,resety); //Position des Reset Knopfs definieren
-	Spielbrett.add(reset); //Reset Knopf zum Spielbrett hinzufuegen
+	board.add(reset); //Reset Knopf zum board hinzufuegen
 	
 	//zurueck Knopf definieren
 	back = new JButton ("<");
@@ -104,7 +103,7 @@ public class Solitaire extends JFrame implements ActionListener
 	back.setBorder(null);
 	back.addActionListener(this);
 	back.setLocation(0, 0);
-	Spielbrett.add(back);
+	board.add(back);
 	
 	//vorwaerts Knopf definieren
 	forward = new JButton (">");
@@ -115,10 +114,10 @@ public class Solitaire extends JFrame implements ActionListener
 	forward.setBorder(null);
 	forward.addActionListener(this);
 	forward.setLocation(controlSize,0);
-	Spielbrett.add(forward);
+	board.add(forward);
 	
 	//Fensterhintergrundfarbe aendern
-	Spielbrett.setBackground(windowBackground);
+	board.setBackground(windowBackground);
 	
 	//Win-Screen definieren
 	win = new JLabel ("You win!");
@@ -126,7 +125,7 @@ public class Solitaire extends JFrame implements ActionListener
 	win.setLocation(windowHeight/2-250,windowWidth/2-50);
 	win.setForeground(buttonFont);
 	win.setFont(new Font("Arial", Font.BOLD, 100));
-	Spielbrett.add(win);
+	board.add(win);
 	win.setVisible(false);
 	
 	//game over Screen definieren
@@ -135,10 +134,10 @@ public class Solitaire extends JFrame implements ActionListener
 	gameOver.setLocation(windowHeight/2-350,windowWidth/2-100);
 	gameOver.setForeground(buttonFont);
 	gameOver.setFont(new Font("Arial", Font.BOLD, 100));
-	Spielbrett.add(gameOver);
+	board.add(gameOver);
 	gameOver.setVisible(false);
 	
-	setContentPane (Spielbrett);
+	setContentPane (board);
 	}
 	
 	public void actionPerformed(ActionEvent Klick) 
@@ -156,16 +155,16 @@ public class Solitaire extends JFrame implements ActionListener
 		{
 			forward();
 		}
-		else if(!ButtonSelected)
+		else if(!buttonSelected)
 		{
 			for(int x=0; x<7; x++) //For-Schleife fuer x-Koordinaten
 			{
 				for(int y = 0; y<7; y++) //For-Schleife fuer y-Koordinaten
 				{
-					if(Quelle == Feld[x][y]) //testet, von welchem Feld eine Aktion ausgeht
+					if(Quelle == field[x][y]) //testet, von welchem field eine Aktion ausgeht
 					{
-						sx = x; //speichert die x-Koordinate, des ausgewaehlten Feldes, in einer Variable
-						sy = y; //speichert die y-Koordinate, des ausgewaehlten Feldes, in einer Variable
+						sx = x; //speichert die x-Koordinate, des ausgewaehlten fieldes, in einer Variable
+						sy = y; //speichert die y-Koordinate, des ausgewaehlten fieldes, in einer Variable
 						play1(); //fuehrt die play1 Methode aus
 					}
 				}
@@ -175,10 +174,10 @@ public class Solitaire extends JFrame implements ActionListener
 			{
 				for(int y = 0; y<7; y++) //For-Schleife fuer y-Koordinaten
 				{
-					if(Quelle == Feld[x][y]) //testet, von welchem Feld eine Aktion ausgeht
+					if(Quelle == field[x][y]) //testet, von welchem field eine Aktion ausgeht
 					{
-						jx = x; //speichert die x-Koordinate, des Feldes auf welches gesprungen werden soll, in einer Variable
-						jy = y; //speichert die y-Koordinate, des Feldes auf welches gesprungen werden soll, in einer Variable
+						jx = x; //speichert die x-Koordinate, des fieldes auf welches gesprungen werden soll, in einer Variable
+						jy = y; //speichert die y-Koordinate, des fieldes auf welches gesprungen werden soll, in einer Variable
 						play2(); //fuehrt die play2 Methode aus
 					}
 				}
@@ -186,84 +185,84 @@ public class Solitaire extends JFrame implements ActionListener
 		}
 	}
 	
-	public void play1() //Methode fuer den ersten Teil eines Spielzugs. (ausw�hlen eines Feldes)
+	public void play1() //Methode fuer den ersten Teil eines Spielzugs. (ausw�hlen eines fieldes)
 	{
-		if(Feld[sx][sy].getBackground() == full) //Nur volle Felder koennen zum Springen ausgewaehlt werden. Diese if-Schleife testet, ob ein Feld schwarz ist
+		if(field[sx][sy].getBackground() == full) //Nur volle fielder koennen zum Springen ausgewaehlt werden. Diese if-Schleife testet, ob ein field schwarz ist
 		{
-				Feld[sx][sy].setBackground(marked); //markiert das ausgewaehlte Feld mit der Farbe Orange
-				ButtonSelected = true; // Speichert, dass ein Feld ausgwaehlt ist
+				field[sx][sy].setBackground(marked); //markiert das ausgewaehlte field mit der Farbe Orange
+				buttonSelected = true; // Speichert, dass ein field ausgwaehlt ist
 		}		
 	}
 	
 	public void play2() //Methode fuer den zweiten Teil eines Spielzugs. Das Ueberspringen
 	{
-		if(Feld[jx][jy].getBackground() == full) //if-Schleife zum direkten Wechseln des ausgewaehlten Feldes
+		if(field[jx][jy].getBackground() == full) //if-Schleife zum direkten Wechseln des ausgewaehlten fieldes
 		{
-			Feld[jx][jy].setBackground(marked);
-			Feld[sx][sy].setBackground(full);
+			field[jx][jy].setBackground(marked);
+			field[sx][sy].setBackground(full);
 			sx = jx;
 			sy = jy;
 			jx = 0;
 			jy = 0;
-			ButtonSelected = true;
+			buttonSelected = true;
 		}
-		else if(jx == sx && jy == sy) //testet, ob das Feld mit dem ausgewaehlten Feld uebereinstimmt
+		else if(jx == sx && jy == sy) //testet, ob das field mit dem ausgewaehlten field uebereinstimmt
 		{
-			Feld[jx][jy].setBackground(full); //setzt das markierte Feld zurueck auf schwarz
-			ButtonSelected = false; //speichert, dass kein Feld mehr markiert ist
+			field[jx][jy].setBackground(full); //setzt das markierte field zurueck auf schwarz
+			buttonSelected = false; //speichert, dass kein field mehr markiert ist
 			sx=0;
 			sy=0;
 			jx=0;
 			jy=0;
 		}
-		else if(Feld[jx][jy].getBackground() == empty)
+		else if(field[jx][jy].getBackground() == empty)
 		{
-			if(jx == sx && jy == (sy - 2) && Feld[sx][sy-1].getBackground() == full) //nach oben springen
+			if(jx == sx && jy == (sy - 2) && field[sx][sy-1].getBackground() == full) //nach oben springen
 			{
-				Feld[jx][jy].setBackground(full);
-				Feld[sx][sy].setBackground(empty);
-				Feld[jx][jy + 1].setBackground(empty);
-				Feld[jx][jy].setBorder(new LineBorder (Color.darkGray));
-				Feld[sx][sy].setBorder(null);
-				Feld[jx][jy + 1].setBorder(null);
+				field[jx][jy].setBackground(full);
+				field[sx][sy].setBackground(empty);
+				field[jx][jy + 1].setBackground(empty);
+				field[jx][jy].setBorder(new LineBorder (Color.darkGray));
+				field[sx][sy].setBorder(null);
+				field[jx][jy + 1].setBorder(null);
 				logHistory();
-				ButtonSelected = false; //speichert, dass kein Feld mehr markiert ist
+				buttonSelected = false; //speichert, dass kein field mehr markiert ist
 				gameOver();
 			}
-			else if(jx == sx && jy == sy + 2 && Feld[sx][sy+1].getBackground() == full) //nach unten springen
+			else if(jx == sx && jy == sy + 2 && field[sx][sy+1].getBackground() == full) //nach unten springen
 			{
-				Feld[jx][jy].setBackground(full);
-				Feld[sx][sy].setBackground(empty);
-				Feld[jx][jy -1].setBackground(empty);
-				Feld[jx][jy].setBorder(new LineBorder (Color.darkGray));
-				Feld[sx][sy].setBorder(null);
-				Feld[jx][jy -1].setBorder(null);
+				field[jx][jy].setBackground(full);
+				field[sx][sy].setBackground(empty);
+				field[jx][jy -1].setBackground(empty);
+				field[jx][jy].setBorder(new LineBorder (Color.darkGray));
+				field[sx][sy].setBorder(null);
+				field[jx][jy -1].setBorder(null);
 				logHistory();
-				ButtonSelected = false; //speichert, dass kein Feld mehr markiert ist
+				buttonSelected = false; //speichert, dass kein field mehr markiert ist
 				gameOver();
 			}
-			else if(jx == sx + 2 && jy == sy && Feld[sx+1][sy].getBackground() == full) //nach links springen
+			else if(jx == sx + 2 && jy == sy && field[sx+1][sy].getBackground() == full) //nach links springen
 			{
-				Feld[jx][jy].setBackground(full);
-				Feld[sx][sy].setBackground(empty);
-				Feld[jx -1][jy].setBackground(empty);
-				Feld[jx][jy].setBorder(new LineBorder (Color.darkGray));
-				Feld[sx][sy].setBorder(null);
-				Feld[jx -1][jy].setBorder(null);
+				field[jx][jy].setBackground(full);
+				field[sx][sy].setBackground(empty);
+				field[jx -1][jy].setBackground(empty);
+				field[jx][jy].setBorder(new LineBorder (Color.darkGray));
+				field[sx][sy].setBorder(null);
+				field[jx -1][jy].setBorder(null);
 				logHistory();
-				ButtonSelected = false; //speichert, dass kein Feld mehr markiert ist
+				buttonSelected = false; //speichert, dass kein field mehr markiert ist
 				gameOver();
 			}
-			else if(jx == sx - 2 && jy == sy && Feld[sx-1][sy].getBackground() == full) //nach rechts springen
+			else if(jx == sx - 2 && jy == sy && field[sx-1][sy].getBackground() == full) //nach rechts springen
 			{
-				Feld[jx][jy].setBackground(full);
-				Feld[sx][sy].setBackground(empty);
-				Feld[jx + 1][jy].setBackground(empty);
-				Feld[jx][jy].setBorder(new LineBorder (Color.darkGray));
-				Feld[sx][sy].setBorder(null);
-				Feld[jx + 1][jy].setBorder(null);
+				field[jx][jy].setBackground(full);
+				field[sx][sy].setBackground(empty);
+				field[jx + 1][jy].setBackground(empty);
+				field[jx][jy].setBorder(new LineBorder (Color.darkGray));
+				field[sx][sy].setBorder(null);
+				field[jx + 1][jy].setBorder(null);
 				logHistory();
-				ButtonSelected = false; //speichert, dass kein Feld mehr markiert ist
+				buttonSelected = false; //speichert, dass kein field mehr markiert ist
 				gameOver();
 			}
 		}
@@ -275,15 +274,15 @@ public class Solitaire extends JFrame implements ActionListener
 		{
 			for (int j = 0; j<7; j++)
 			{
-				Feld[i][j].setBackground(full); // setzt alle Felder auf voll
-				Feld[i][j].setVisible(true);
-				Feld[i][j].setBorder(new LineBorder (Color.darkGray));
+				field[i][j].setBackground(full); // setzt alle fielder auf voll
+				field[i][j].setVisible(true);
+				field[i][j].setBorder(new LineBorder (Color.darkGray));
 				win.setVisible(false);
 			}
 		}
-		Feld[3][3].setBackground(empty); //Farbe des mittleren Feldes auf leer setzen
-		Feld[3][3].setBorder(null);
-		ButtonSelected = false; //speichert, dass kein Feld markiert ist
+		field[3][3].setBackground(empty); //Farbe des mittleren fieldes auf leer setzen
+		field[3][3].setBorder(null);
+		buttonSelected = false; //speichert, dass kein field markiert ist
 		for(int i=0; i<maxTurns; i++) //l�scht den Verlauf
 		{
 			sxHistory[i] = 0;
@@ -305,19 +304,19 @@ public class Solitaire extends JFrame implements ActionListener
 	{
 		if(turns > 0) // testet, ob bereits ein Zug gemacht wurde
 		{
-			//Holt die Koordinaten der Felder, welche am letzten Spielzug beteiligt waren aus dem Verlauf
+			//Holt die Koordinaten der fielder, welche am letzten Spielzug beteiligt waren aus dem Verlauf
 			sx = sxHistory[turns];
 			sy = syHistory[turns];
 			jx = jxHistory[turns];
 			jy = jyHistory[turns];
 			turns--; //setzt den Spielzugzaehler um 1 zurueck
 			//macht den Spielzug rueckgaengig
-			Feld[jx][jy].setBackground(empty);
-			Feld[sx][sy].setBackground(full);
-			Feld[(sx+jx)/2][(sy+jy)/2].setBackground(full);
-			Feld[jx][jy].setBorder(null);
-			Feld[sx][sy].setBorder(new LineBorder (Color.darkGray));
-			Feld[(sx+jx)/2][(sy+jy)/2].setBorder(new LineBorder (Color.darkGray));
+			field[jx][jy].setBackground(empty);
+			field[sx][sy].setBackground(full);
+			field[(sx+jx)/2][(sy+jy)/2].setBackground(full);
+			field[jx][jy].setBorder(null);
+			field[sx][sy].setBorder(new LineBorder (Color.darkGray));
+			field[(sx+jx)/2][(sy+jy)/2].setBorder(new LineBorder (Color.darkGray));
 			
 			hideCorners();
 		} 
@@ -334,12 +333,12 @@ public class Solitaire extends JFrame implements ActionListener
 			jx = jxHistory[turns];
 			jy = jyHistory[turns];
 			//macht einen Spielzug vorwaerts
-			Feld[jx][jy].setBackground(full);
-			Feld[sx][sy].setBackground(empty);
-			Feld[(sx+jx)/2][(sy+jy)/2].setBackground(empty);
-			Feld[jx][jy].setBorder(new LineBorder (Color.darkGray));
-			Feld[sx][sy].setBorder(null);
-			Feld[(sx+jx)/2][(sy+jy)/2].setBorder(null);
+			field[jx][jy].setBackground(full);
+			field[sx][sy].setBackground(empty);
+			field[(sx+jx)/2][(sy+jy)/2].setBackground(empty);
+			field[jx][jy].setBorder(new LineBorder (Color.darkGray));
+			field[sx][sy].setBorder(null);
+			field[(sx+jx)/2][(sy+jy)/2].setBorder(null);
 		}
 	}
 	
@@ -359,28 +358,28 @@ public class Solitaire extends JFrame implements ActionListener
 		
 	public void gameOver() //Funktion, welche testet, ob noch mindestens ein Spielzug mueglich ist und ob das Spiel geschafft wurde
 	{
-		turnPossible = false;
+		boolean turnPossible = false;
 		
-		for (int i = 0; i<7; i++)//For-Schleife testet fuer alle Felder, ob noch ein Zug moeglich ist. Falls nicht bleibt der bollean "turnPossible" die ganze Schleife �ber false und der win- oder gameOver-Screen wird angezeigt
+		for (int i = 0; i<7; i++)//For-Schleife testet fuer alle fielder, ob noch ein Zug moeglich ist. Falls nicht bleibt der bollean "turnPossible" die ganze Schleife �ber false und der win- oder gameOver-Screen wird angezeigt
 		{
 			for (int j = 0; j<7; j++)
 			{
-				if(Feld[i][j].getBackground() == full) //Feld voll?
+				if(field[i][j].getBackground() == full) //field voll?
 				{
-					fullFields++;//z�hlt die Anzahl der gef�llten Felder
-					if(i<5 && Feld[i+1][j].getBackground() == full && Feld[i+2][j].getBackground() == empty) //Zug moeglich nach unten?
+					fullFields++;//z�hlt die Anzahl der gef�llten fielder
+					if(i<5 && field[i+1][j].getBackground() == full && field[i+2][j].getBackground() == empty) //Zug moeglich nach unten?
 					{
 						turnPossible = true;
 					}
-					else if(i>1 && Feld[i-1][j].getBackground() == full && Feld[i-2][j].getBackground() == empty) //Zug moeglich nach oben?
+					else if(i>1 && field[i-1][j].getBackground() == full && field[i-2][j].getBackground() == empty) //Zug moeglich nach oben?
 					{
 						turnPossible = true;
 					}
-					else if(j<5 && Feld[i][j+1].getBackground() == full && Feld[i][j+2].getBackground() == empty) //Zug moeglich nach rechts?
+					else if(j<5 && field[i][j+1].getBackground() == full && field[i][j+2].getBackground() == empty) //Zug moeglich nach rechts?
 					{
 						turnPossible = true;
 					}
-					else if(j>1 &&Feld[i][j-1].getBackground() == full &&Feld[i][j-2].getBackground() == empty) //Zug moeglich nach links?
+					else if(j>1 &&field[i][j-1].getBackground() == full &&field[i][j-2].getBackground() == empty) //Zug moeglich nach links?
 					{						
 						turnPossible = true;
 					}
@@ -388,9 +387,9 @@ public class Solitaire extends JFrame implements ActionListener
 			}
 		}
 		
-		if(fullFields == 1) //wenn nur noch ein Feld voll ist, wird getestet, ob es sich um das mittlere handelt und somit das Spiel gewonnen wurde
+		if(fullFields == 1) //wenn nur noch ein field voll ist, wird getestet, ob es sich um das mittlere handelt und somit das Spiel gewonnen wurde
 		{
-			if(Feld[3][3].getBackground() == full)
+			if(field[3][3].getBackground() == full)
 			{
 				clearButtons();
 				win.setVisible(true); // win-Screen wird angezeigt
@@ -406,16 +405,16 @@ public class Solitaire extends JFrame implements ActionListener
 			clearButtons(); 
 			gameOver.setVisible(true); // gameOver-Screen wird angezeigt
 		}
-		fullFields = 0; //Die Anzahl der vollen Felder wird fuer den naechsten Test zurueckgesetzt
+		fullFields = 0; //Die Anzahl der vollen fielder wird fuer den naechsten Test zurueckgesetzt
 	}
 	
-	public void clearButtons() //Funktion zum Ausblenden aller Felder, fuer Win oder Game Over Screen
+	public void clearButtons() //Funktion zum Ausblenden aller fielder, fuer Win oder Game Over Screen
 	{
 		for (int x = 0; x<7; x++)
 		{
 			for (int y = 0; y<7; y++)
 			{
-				Feld[x][y].setVisible(false); 
+				field[x][y].setVisible(false); 
 			}
 		}
 	}
@@ -423,40 +422,40 @@ public class Solitaire extends JFrame implements ActionListener
 	public void hideCorners()
 	{
 		//Eckfelder ausblenden
-		Feld[0][0].setVisible(false);
-		Feld[0][1].setVisible(false);
-		Feld[0][5].setVisible(false);
-		Feld[0][6].setVisible(false);
-		Feld[1][0].setVisible(false);
-		Feld[1][1].setVisible(false);
-		Feld[1][5].setVisible(false);
-		Feld[1][6].setVisible(false);
-		Feld[5][0].setVisible(false);
-		Feld[5][1].setVisible(false);
-		Feld[5][5].setVisible(false);
-		Feld[5][6].setVisible(false);
-		Feld[6][0].setVisible(false);
-		Feld[6][1].setVisible(false);
-		Feld[6][5].setVisible(false);
-		Feld[6][6].setVisible(false);
+		field[0][0].setVisible(false);
+		field[0][1].setVisible(false);
+		field[0][5].setVisible(false);
+		field[0][6].setVisible(false);
+		field[1][0].setVisible(false);
+		field[1][1].setVisible(false);
+		field[1][5].setVisible(false);
+		field[1][6].setVisible(false);
+		field[5][0].setVisible(false);
+		field[5][1].setVisible(false);
+		field[5][5].setVisible(false);
+		field[5][6].setVisible(false);
+		field[6][0].setVisible(false);
+		field[6][1].setVisible(false);
+		field[6][5].setVisible(false);
+		field[6][6].setVisible(false);
 		
 		//Setzt die Farbe der Eckfelder auf leer
-		Feld[0][0].setBackground(windowBackground);
-		Feld[0][1].setBackground(windowBackground);
-		Feld[0][5].setBackground(windowBackground);
-		Feld[0][6].setBackground(windowBackground);
-		Feld[1][0].setBackground(windowBackground);
-		Feld[1][1].setBackground(windowBackground);
-		Feld[1][5].setBackground(windowBackground);
-		Feld[1][6].setBackground(windowBackground);
-		Feld[5][0].setBackground(windowBackground);
-		Feld[5][1].setBackground(windowBackground);
-		Feld[5][5].setBackground(windowBackground);
-		Feld[5][6].setBackground(windowBackground);
-		Feld[6][0].setBackground(windowBackground);
-		Feld[6][1].setBackground(windowBackground);
-		Feld[6][5].setBackground(windowBackground);
-		Feld[6][6].setBackground(windowBackground);
+		field[0][0].setBackground(windowBackground);
+		field[0][1].setBackground(windowBackground);
+		field[0][5].setBackground(windowBackground);
+		field[0][6].setBackground(windowBackground);
+		field[1][0].setBackground(windowBackground);
+		field[1][1].setBackground(windowBackground);
+		field[1][5].setBackground(windowBackground);
+		field[1][6].setBackground(windowBackground);
+		field[5][0].setBackground(windowBackground);
+		field[5][1].setBackground(windowBackground);
+		field[5][5].setBackground(windowBackground);
+		field[5][6].setBackground(windowBackground);
+		field[6][0].setBackground(windowBackground);
+		field[6][1].setBackground(windowBackground);
+		field[6][5].setBackground(windowBackground);
+		field[6][6].setBackground(windowBackground);
 	}
 	
 	public static void main (String[] args)
