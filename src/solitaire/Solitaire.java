@@ -50,7 +50,7 @@ public class Solitaire extends JFrame implements ActionListener
 	private Color full = Color.black; //Farbe von vollen fieldern
 	private Color windowBackground = Color.darkGray; //Hintergrundfarbe
 	private Color buttonBackground = Color.black; //Hintergrundfarbe der Buttons
-	private Color buttonFont = Color.white; //Schriftfarbe der Buttons
+	private Color buttonFontColor = Color.white; //Schriftfarbe der Buttons
 	
 	//Fenster Konstruktor
 	public Solitaire()
@@ -69,77 +69,86 @@ public class Solitaire extends JFrame implements ActionListener
 				board.add(field[i][j]); // Buttons zum field hinzufuegen
 			}
 		}
-	//Eckfelder ausblenden
-	hideCorners();
-	
-	//Farbe des mittleren fieldes �ndern
-	field[3][3].setBackground(empty);
-	field[3][3].setBorder(null);
-	
-	//Fenstergroesse definieren
-	windowHeight = field[6][6].getBounds().y + buttonSize + borderDistance + 100;
-	windowWidth = field[6][6].getBounds().x + buttonSize + borderDistance;
-	
-	//reset Knopf definieren
-	reset = new JButton ("Reset");
-	reset.setSize(resetWidth,resetHeight);
-	reset.setBackground(buttonBackground); //Knopfhintergrund aendern
-	reset.setForeground(buttonFont); //Schriftfarbe aendern
-	reset.setBorder(null); //Knopfraender ausblenden
-	reset.addActionListener(this);
-	resetx = 300;
-	resety = 730;
-	reset.setLocation(resetx,resety); //Position des Reset Knopfs definieren
-	board.add(reset); //Reset Knopf zum board hinzufuegen
-	
-	//zurueck Knopf definieren
-	back = new JButton ("<");
-	back.setSize(controlSize,controlSize);
-	back.setBackground(buttonBackground);
-	back.setFont(new Font("Arial", Font.PLAIN, 20));
-	back.setForeground(buttonFont);
-	back.setBorder(null);
-	back.addActionListener(this);
-	back.setLocation(0, 0);
-	board.add(back);
-	
-	//vorwaerts Knopf definieren
-	forward = new JButton (">");
-	forward.setSize(controlSize,controlSize);
-	forward.setBackground(buttonBackground);
-	forward.setFont(new Font("Arial", Font.PLAIN, 20));
-	forward.setForeground(buttonFont);
-	forward.setBorder(null);
-	forward.addActionListener(this);
-	forward.setLocation(controlSize,0);
-	board.add(forward);
-	
-	//Fensterhintergrundfarbe aendern
-	board.setBackground(windowBackground);
-	
-	//Win-Screen definieren
-	win = new JLabel ("You win!");
-	win.setSize(500,100);
-	win.setLocation(windowHeight/2-250,windowWidth/2-50);
-	win.setForeground(buttonFont);
-	win.setFont(new Font("Arial", Font.BOLD, 100));
-	board.add(win);
-	win.setVisible(false);
-	
-	//game over Screen definieren
-	gameOver = new JLabel ("Game Over!");
-	gameOver.setSize(700,200);
-	gameOver.setLocation(windowHeight/2-350,windowWidth/2-100);
-	gameOver.setForeground(buttonFont);
-	gameOver.setFont(new Font("Arial", Font.BOLD, 100));
-	board.add(gameOver);
-	gameOver.setVisible(false);
-	
-	setContentPane (board);
+		//Eckfelder ausblenden
+		hideCorners();
+		
+		//Farbe des mittleren fieldes aendern
+		field[3][3].setBackground(empty);
+		field[3][3].setBorder(null);
+		
+		//Fenstergroesse definieren
+		windowHeight = field[6][6].getBounds().y + buttonSize + borderDistance + 100;
+		windowWidth = field[6][6].getBounds().x + buttonSize + borderDistance;
+		
+		//reset Knopf definieren
+		reset = new JButton ("Reset");
+		reset.setSize(resetWidth,resetHeight);
+		reset.setBackground(buttonBackground); //Knopfhintergrund aendern
+		reset.setForeground(buttonFontColor); //Schriftfarbe aendern
+		reset.setBorder(null); //Knopfraender ausblenden
+		reset.addActionListener(this);
+		resetx = 300;
+		resety = 730;
+		reset.setLocation(resetx,resety); //Position des Reset Knopfs definieren
+		board.add(reset); //Reset Knopf zum board hinzufuegen
+		
+		String font = "Arial";
+		Font buttonFont = new Font(font, Font.PLAIN, 20);
+		Font announcementFont = new Font(font, Font.PLAIN, 100);
+		
+		//zurueck Knopf definieren
+		back = button("<", buttonFont, buttonFontColor, buttonBackground, controlSize);
+		back.addActionListener(this);
+		back.setLocation(0, 0);
+		board.add(back);
+		
+		//vorwaerts Knopf definieren
+		forward = button(">", buttonFont, buttonFontColor, buttonBackground, controlSize);
+		forward.addActionListener(this);
+		forward.setLocation(controlSize,0);
+		board.add(forward);
+		
+		//Fensterhintergrundfarbe aendern
+		board.setBackground(windowBackground);
+		
+		
+		//Win-Screen definieren
+		win = announcement("You win!", announcementFont, buttonFontColor);
+		win.setSize(500,100);
+		win.setLocation(windowHeight/2-250,windowWidth/2-50);
+		board.add(win);
+		win.setVisible(false);
+		
+		//game over Screen definieren
+		gameOver = announcement("Game Over!", announcementFont, buttonFontColor);
+		gameOver.setSize(700,200);
+		gameOver.setLocation(windowHeight/2-350,windowWidth/2-100);
+		board.add(gameOver);
+		gameOver.setVisible(false);
+		
+		setContentPane (board);
 	}
 	
-	public void actionPerformed(ActionEvent Klick) 
-	{
+	public static JButton button(String text, Font font, Color fontColor, Color backgroundColor, int size) {
+		JButton button = new JButton(text);
+		button.setFont(font);
+		button.setForeground(fontColor);
+		button.setSize(size,size);
+		button.setBackground(backgroundColor);
+		button.setForeground(fontColor);
+		button.setBorder(null);
+		return button;
+	}
+
+	public static JLabel announcement(String text, Font font, Color textColor) {
+		JLabel ann = new JLabel (text);
+		ann.setForeground(textColor);
+		ann.setFont(font);
+		ann.setVisible(false);
+		return ann;
+	}
+	
+	public void actionPerformed(ActionEvent Klick) {
 		Object Quelle = Klick.getSource();
 		if(Quelle == reset) { reset(); }
 		else if(Quelle == back) { back(); }
