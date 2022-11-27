@@ -366,41 +366,16 @@ public class Solitaire extends JFrame implements ActionListener
 	}
 	
 	public void hideCorners() {
-		//Eckfelder ausblenden
-		field[0][0].setVisible(false);
-		field[0][1].setVisible(false);
-		field[0][5].setVisible(false);
-		field[0][6].setVisible(false);
-		field[1][0].setVisible(false);
-		field[1][1].setVisible(false);
-		field[1][5].setVisible(false);
-		field[1][6].setVisible(false);
-		field[5][0].setVisible(false);
-		field[5][1].setVisible(false);
-		field[5][5].setVisible(false);
-		field[5][6].setVisible(false);
-		field[6][0].setVisible(false);
-		field[6][1].setVisible(false);
-		field[6][5].setVisible(false);
-		field[6][6].setVisible(false);
-		
-		//Setzt die Farbe der Eckfelder auf leer
-		field[0][0].setBackground(windowBackground);
-		field[0][1].setBackground(windowBackground);
-		field[0][5].setBackground(windowBackground);
-		field[0][6].setBackground(windowBackground);
-		field[1][0].setBackground(windowBackground);
-		field[1][1].setBackground(windowBackground);
-		field[1][5].setBackground(windowBackground);
-		field[1][6].setBackground(windowBackground);
-		field[5][0].setBackground(windowBackground);
-		field[5][1].setBackground(windowBackground);
-		field[5][5].setBackground(windowBackground);
-		field[5][6].setBackground(windowBackground);
-		field[6][0].setBackground(windowBackground);
-		field[6][1].setBackground(windowBackground);
-		field[6][5].setBackground(windowBackground);
-		field[6][6].setBackground(windowBackground);
+		for(int i=0; i<7; i++) {
+			for(int j=0; j<7; j++) {
+				if (i<2 && j<2 || i<2 && j>4 || i>4 && j<2 || i>4 && j>4) {
+					//Eckfelder ausblenden
+					field[i][j].setVisible(false);
+					//Setzt die Farbe der Eckfelder auf leer
+					field[i][j].setBackground(windowBackground);
+				}
+			}
+		}
 	}
 	
 	public static void main (String[] args) {
